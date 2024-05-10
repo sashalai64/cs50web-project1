@@ -72,7 +72,7 @@ def search(request):
                 "search_form": searchForm()
             })
     
-    #if method not POST or not valid form, return to indxe page
+    #if method not POST or not valid form, return to index page
     return HttpResponseRedirect(reverse('index'))
 
 
@@ -80,8 +80,7 @@ def new(request):
     #if GET (Initial Page Load), create an empty form
     if request.method == 'GET':
         return render(request, "encyclopedia/new.html", {
-            "create_form": createForm(),
-            "search_form": searchForm()
+            "create_form": createForm()
         })
 
     #if POST (Form Submission), validate and render the form data submitted by the user
@@ -92,18 +91,16 @@ def new(request):
             title = form.cleaned_data['title']
             content = form.cleaned_data['content']
         else:
+            messages.error(request, "Entry form not valid, please try again.")
             return render(request, "encyclopedia/new.html", {
                 "create_form": form,
-                "search_form": searchForm(),
-                "messages": "Entry form not valid, please try again."
             })
             
         #if new entry already exists
         if util.get_entry(title):
+            messages.error(request, "Entry already exists, please try again.")
             return render(request, "encyclopedia/new.html", {
                 "create_form": form,
-                "search_form": searchForm(),
-                "messages": "Entry already exists, please try again."
             })
 
         #if doesn't exist, save entry
