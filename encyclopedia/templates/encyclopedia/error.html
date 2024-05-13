@@ -1,0 +1,21 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Error
+{% endblock %}
+
+{% block body %}
+
+    <h1>Error: "{{title}}" not found</h1>
+
+    {% if related_entries %}
+    <h3>Related Entries: </h3>
+    <ul>
+        {% for item in related_entries %} 
+        <li><a href="{% url 'entry' title=item %}">{{item}}</a></li>
+        {% endfor %}
+    </ul>
+
+    {% endif %}
+    
+{% endblock %}
