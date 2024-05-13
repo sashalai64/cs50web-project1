@@ -44,7 +44,7 @@ Install Python and Django to run.
 
 - Navigate to the Project Directory
   ```
-  cd <your-path/cs50web-project1/wiki>
+  cd <your-path/cs50web-project1>
   ```
    
 - Run Locally
