@@ -43,17 +43,12 @@ Welcome to the Wiki Encyclopedia! This is a web application where you can create
       ```
       git clone https://github.com/sashalai64/cs50web-project1.git
       ```
-
-2. **Install Dependencies**
-      ```
-      pip install -r requirements.txt
-      ```
    
-3. **Run the Server**
+2. **Run the Server**
       ```
       python manage.py runserver
       ```
-4. **Access the Application**
+      
+3. **Access the Application**
    
     Visit `http://127.0.0.1:8000/` in your browser.
-    
