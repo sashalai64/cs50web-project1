@@ -8,14 +8,17 @@
 
     <h1>Error: "{{title}}" not found</h1>
 
-    {% if related_entries %}
-    <h3>Related Entries: </h3>
-    <ul>
-        {% for item in related_entries %} 
-        <li><a href="{% url 'entry' title=item %}">{{item}}</a></li>
-        {% endfor %}
-    </ul>
+    {% if message %} 
+        <p>Page does not exist, please <a href="{% url 'new' %}">create one</a> or return <a href="{% url 'index'%}">home</a>.</p>
+    {% endif %}
 
+    {% if related_entries %}
+        <h3>Related Entries: </h3>
+        <ul>
+            {% for item in related_entries %} 
+                <li><a href="{% url 'entry' title=item %}">{{item}}</a></li>
+            {% endfor %}
+        </ul>
     {% endif %}
     
 {% endblock %}

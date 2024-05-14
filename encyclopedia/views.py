@@ -31,24 +31,30 @@ def index(request):
         "search_form": searchForm()
     })
 
-def entry(request, title):
-    content = util.get_entry(title)
 
-    if content is None:
+def entry(request, title):
+    entry = util.get_entry(title)
+
+    #if entry doesn't exist, return error page and display related entries
+    if entry is None:
         related = util.get_related(title)
+        invalid_entry_message = True
 
         return render(request, "encyclopedia/error.html", {
             "title": title,
-            "related_entries": related
+            "related_entries": related,
+            "message": invalid_entry_message
         })
     
     #convert text to HTML
-    markdown_text = markdown2.markdown(content)
+    markdown_text = markdown2.markdown(entry)
 
+    #if entry exists, return entry page
     return render(request, "encyclopedia/entry.html", {
         "title": title,
         "content": markdown_text
     })
+
 
 def search(request):
     if request.method == 'POST':
@@ -57,16 +63,15 @@ def search(request):
         #if the form is valid, try to match with the entries
         if form.is_valid():
             query = form.cleaned_data['q']
-            match = util.get_entry(query)
-
+            entry = util.get_entry(query)
             print('search request:', query)
 
-            #if query is matched
-            if match:
+            #if query is matched (entry exists), return entry page
+            if entry:
                 return HttpResponseRedirect(reverse('entry', args=(query,)))
 
             #display related results
-            related = util.get_related(query)            
+            related = util.get_related(query)     
 
             return render(request, "encyclopedia/search.html", {
                 "query": query,
@@ -119,9 +124,19 @@ def edit(request, title):
     if request.method == 'GET':
         content = util.get_entry(title)
 
+        #if entry doesn't exist, return error
         if content is None:
-            messages.error(f'"{title}" page does not exist, please create one.')
+            invalid_entry_message = True
+            related = util.get_related(title)
 
+            #messages.error(request, f'"{title}" page does not exist, please create one.')
+            return render(request, "encyclopedia/error.html", { 
+                "title": title, 
+                "related_entries": related,
+                "message": invalid_entry_message
+            })
+
+        #go to edit page
         return render(request, "encyclopedia/edit.html", {
             "title": title,
             "edit_form": editForm(initial={"content": content}),
@@ -135,13 +150,16 @@ def edit(request, title):
         if form.is_valid():
             content = form.cleaned_data['content']
             util.save_entry(title, content)
-            #messages.success(f'Entry "{title}" page saved successfully!')
+            #messages.success(request, f'Entry "{title}" page saved successfully!')
             return HttpResponseRedirect(reverse('entry', args=(title, )))
         
         else:
-            messages.error("Form is invalid, please try again.")
+            messages.error(request, "Form is invalid, please try again.")
             return render(request, "encyclopedia/edit.html", {
                 "title": title, 
                 "edit_form": form,
                 "message": messages
             })
+
+
+#def random(request):
