@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 import markdown2 
 from django.contrib import messages
+import secrets  
 
 class searchForm(forms.Form):
     q = forms.CharField(label='', widget=forms.TextInput(attrs={
@@ -162,4 +163,9 @@ def edit(request, title):
             })
 
 
-#def random(request):
+def random(request):
+    #get a random entry from entries
+    entries = util.list_entries()
+    title = secrets.choice(entries)
+
+    return HttpResponseRedirect(reverse('entry', args=(title, )))
