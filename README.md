@@ -1,9 +1,9 @@
 # CS50's Web Programming with Python and JavaScript
 
 # Project 1 - Wiki
-Website: https://cs50.harvard.edu/web/2020/projects/1/wiki/
+[Project Description](https://cs50.harvard.edu/web/2020/projects/1/wiki/)
 
-## Description
+## Overview
 Welcome to the Wiki Encyclopedia! This is a web application where you can create, edit, and browse encyclopedia entries.
 
 ## Features
